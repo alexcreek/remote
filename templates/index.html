@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <script type="text/javascript">
+    function callHome(movie, action) {
+      const socket = new WebSocket("ws://10.10.10.4:9001/" + action + "?name=" + movie)
+    
+      // Connection opened
+      socket.addEventListener('open', function (event) {
+        x = document.getElementsByClassName("modal-body");
+        x[0].innerHTML = '';
+      });
+      
+      // Listen for messages
+      socket.addEventListener('message', function (event) {
+        x = document.getElementsByClassName("modal-body");
+        x[0].innerHTML += event.data;
+        x[0].innerHTML += '</br>';
+      });
+
+      // Connection closed
+      socket.addEventListener('close', function (event) {
+        x = document.getElementsByClassName("modal-body");
+        x[0].innerHTML = '';
+        $('#exampleModal').modal('hide')
+      });
+    }
+
+    function queryYoutube(movie) {
+      var pattern = /\.\w+rip.*$/i;
+      var query = movie.replace(pattern, ''); 
+      window.location.href = "https://www.youtube.com/results?search_query=" + query + "+trailer";
+    }
+  </script>
+  </head>
+  <body>
+    <table style="width:100%">
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+    {% for movie in movies %}
+    <tr>
+      <td><button type="button" class="btn btn-danger" onClick="queryYoutube('{{ movie }}')">Youtube</button></td>
+      <td><button type="button" class="btn btn-light" id="copyBtn" data-toggle="modal" data-target="#exampleModal" onclick="callHome('{{ movie }}', 'copy')">Copy</button></td>
+      <td><button type="button" class="btn btn-dark" id="deleteBtn" data-toggle="modal" data-target="#exampleModal" onclick="callHome('{{ movie }}', 'delete')">Delete</button></td>
+      <td> {{ movie }}</td>
+
+    {% endfor %}
+    </tr>
+    </table>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+      </div>
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  </body>
+</html>
