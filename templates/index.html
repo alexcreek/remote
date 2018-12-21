@@ -8,14 +8,14 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
   <script type="text/javascript">
     function callHome(movie, action) {
-      const socket = new WebSocket("ws://10.10.10.4:9001/" + action + "?name=" + movie)
-    
+      const socket = new WebSocket("ws://10.10.10.4:9001/" + action + "?name=" + movie);
+
       // Connection opened
       socket.addEventListener('open', function (event) {
         x = document.getElementsByClassName("modal-body");
         x[0].innerHTML = '';
       });
-      
+
       // Listen for messages
       socket.addEventListener('message', function (event) {
         x = document.getElementsByClassName("modal-body");
@@ -27,13 +27,19 @@
       socket.addEventListener('close', function (event) {
         x = document.getElementsByClassName("modal-body");
         x[0].innerHTML = '';
-        $('#exampleModal').modal('hide')
+        $('#exampleModal').modal('hide');
       });
+    }
+
+    function updateLibrary() {
+      const updateSocket = new WebSocket("ws://10.10.10.4:9001/update");
+      updateSocket.send("");
+      updateSocket.close();
     }
 
     function queryYoutube(movie) {
       var pattern = /\.\w+rip.*$/i;
-      var query = movie.replace(pattern, ''); 
+      var query = movie.replace(pattern, '');
       window.location.href = "https://www.youtube.com/results?search_query=" + query + "+trailer";
     }
   </script>
@@ -46,6 +52,7 @@
       <th></th>
       <th></th>
     </tr>
+      <td><button type="button" class="btn btn-primary" id="updateBtn" onclick="updateLibrary()">Update</button></td>
     {% for movie in movies %}
     <tr>
       <td><button type="button" class="btn btn-danger" onClick="queryYoutube('{{ movie }}')">Youtube</button></td>

@@ -1,0 +1,8 @@
+#!/usr/bin/python
+from plexapi.server import PlexServer
+
+baseurl = 'http://flash:32400'
+token = ''
+plex = PlexServer(baseurl, token)
+movies = plex.library.section('Movies')
+movies.update()

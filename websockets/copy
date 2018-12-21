@@ -1,5 +1,4 @@
 #!/bin/bash
 FILE=$(echo $QUERY_STRING | cut -f 2 -d \=)
 
-rsync -av /data/rutorrent/incoming/${FILE} /data/movies/
-date &> /data/movies/foo
+rsync -av /data/rutorrent/incoming/"${FILE}" /data/movies/
