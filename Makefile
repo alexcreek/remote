@@ -1,2 +1,6 @@
-start:
-	export FLASK_DEBUG=0 FLASK_APP=remote.py; flask run -h 0.0.0.0 -p 5000
+.PHONY: build
+now := $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
+commit := $(shell git rev-parse HEAD)
+
+build:
+	docker build -t remote --build-arg now=$(now) --build-arg commit=$(commit) .
