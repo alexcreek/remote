@@ -1,0 +1,4 @@
+---
+build: make build
+test: make test
+pr: make test
