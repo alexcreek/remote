@@ -11,10 +11,10 @@ ENV LC_ALL=C.UTF-8
 WORKDIR /code
 EXPOSE 5000
 
-COPY $PWD .
 RUN apt-get update && \
   apt-get install -y curl python3 python3-pip && \
-  apt-get clean && \
-  pip3 install -r requirements.txt
+  apt-get clean
 
+COPY $PWD .
+RUN pip3 install -r requirements.txt
 CMD ["/usr/bin/python3", "wsgi.py"]
