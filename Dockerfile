@@ -12,7 +12,7 @@ WORKDIR /code
 EXPOSE 5000
 
 COPY $PWD .
-RUN apt update && \
+RUN apt-get update && \
   apt-get install -y curl python3 python3-pip && \
   apt-get clean && \
   pip3 install -r requirements.txt
