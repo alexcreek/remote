@@ -10,6 +10,6 @@ test: build
 	true
 
 build:
-	docker build -t alexcreek/remote:$(commit) alexcreek/remote:latest --build-arg now=$(now) --build-arg commit=$(commit) .
+	docker build -t alexcreek/remote:$(commit) -t alexcreek/remote:latest --build-arg now=$(now) --build-arg commit=$(commit) .
 
 
