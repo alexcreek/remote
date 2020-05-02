@@ -1,8 +1,0 @@
-#!/bin/bash
-FILE=$(echo $QUERY_STRING | cut -f 2 -d \=)
-echo "deleting $FILE"
-rm -rf /data/movies/"${FILE}"
-echo '<br>'
-echo '<br>'
-echo 'Done'
-date &> /data/movies/foo
