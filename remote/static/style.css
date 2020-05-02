@@ -1,0 +1,18 @@
+.main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.column {
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+img {
+  width: 100%
+}
+
+.modal-footer {
+  justify-content: space-between
+}
