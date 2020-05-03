@@ -1,10 +1,17 @@
 import os
+import sys
+import dotenv
 import inotify.adapters
 
 def main():
-    watch_dir = os.getenv('WATCH_DIR')
+    dotenv.load_dotenv()
+    try:
+        WATCH_DIR = os.environ['WATCH_DIR']
+    except KeyError:
+        print('Error: WATCH_DIR environment variable not found')
+        sys.exit(1)
     i = inotify.adapters.Inotify()
-    i.add_watch('/data/nfs/seedbox/incoming/')
+    i.add_watch(WATCH_DIR)
 
     for event in i.event_gen(yield_nones=False):
         (_, type_names, path, filename) = event
