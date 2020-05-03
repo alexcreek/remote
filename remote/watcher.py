@@ -4,12 +4,7 @@ import dotenv
 import inotify.adapters
 
 def main():
-    dotenv.load_dotenv()
-    try:
-        WATCH_DIR = os.environ['WATCH_DIR']
-    except KeyError:
-        print('Error: WATCH_DIR environment variable not found')
-        sys.exit(1)
+    WATCH_DIR = os.getenv('WATCH_DIR', '/data/nfs/seedbox/incoming')
     i = inotify.adapters.Inotify()
     i.add_watch(WATCH_DIR)
 
