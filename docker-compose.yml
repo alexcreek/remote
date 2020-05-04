@@ -1,8 +1,10 @@
 version: '3.1'
 services:
   web:
-    image: nginx
+    image: remote:latest
     volumes:
-      - $PWD/remote:/usr/share/nginx/html
-    ports:
-      - 80:80
+      - /tmp/remote:/tmp/remote
+      - /data/nfs/seedbox/incoming:/watch
+    environment:
+      - DB_DIR=/tmp/remote
+      - WATCH_DIR=/watch
