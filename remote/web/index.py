@@ -1,18 +1,11 @@
-import inotify.adapters
+from flask import Blueprint, render_template, current_app
+import remote.db
 
-def _main():
-    i = inotify.adapters.Inotify()
+bp = Blueprint('index', __name__)
 
-    i.add_watch('/tmp')
-
-    with open('/tmp/test_file', 'w'):
-        pass
-
-    for event in i.event_gen(yield_nones=False):
-        (_, type_names, path, filename) = event
-
-        print("PATH=[{}] FILENAME=[{}] EVENT_TYPES={}".format(
-              path, filename, type_names))
-
-if __name__ == '__main__':
-    _main()
+@bp.route('/', methods=('GET', 'POST'))
+def index():
+    db = remote.db.Db()
+    movies = []
+    movies = db.query('SELECT * FROM movie ORDER BY id;')
+    return render_template('index.html', movies=movies)

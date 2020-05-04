@@ -4,16 +4,14 @@
   </head>
     <link rel="stylesheet" href="static/style.css">
   <body>
+{% block content %}
+  {% for m in movies %}
       <div class="main">
         <div class="column">
-          <img src="https://image.tmdb.org/t/p/original/bptfVGEQuv6vDTIMVCHjJ9Dz8PX.jpg" data-toggle="modal" data-target="#exampleModal" data-overview="a touching story about asdf"
-          data-genre="foo bar fuckall">
-          <img src="https://image.tmdb.org/t/p/original/sQuxceRcV3cxKH5CAnAUZe0qFKS.jpg" data-toggle="modal" data-target="#exampleModal">
+          <img src="{{ m[5] }}" data-toggle="modal" data-target="#exampleModal" data-title_="{{ m[1] }}" data-overview="{{ m[3] }}" data-year="{{ m[2] }}" data-path"{{ m[4] }}">
         </div>
-        <div class="column">
-          <img src="https://image.tmdb.org/t/p/original/bOyIpueqjFkUMNkPKCLcyb9WWpx.jpg" data-toggle="modal" data-target="#exampleModal">
-          <img src="https://image.tmdb.org/t/p/original/80iFKwaNumOuk5xDKSoS5H3qICc.jpg" data-toggle="modal" data-target="#exampleModal">
-        </div>
+  {% endfor %}
+{% endblock %}
       </div>
   
   <!-- Modal -->
@@ -21,9 +19,11 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-body">
-          <div class="overview">
+          <div class="title_">
           </div>
-          <div class="genre">
+          <div class="year">
+          </div>
+          <div class="overview">
           </div>
           <div class="modal-footer">
             <a href="#">

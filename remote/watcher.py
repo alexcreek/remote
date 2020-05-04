@@ -28,7 +28,7 @@ def main():
                 year = r[0].release_date
                 overview = r[0].overview
                 filepath = '{}/{}'.format(path, filename)
-                poster_url = 'https://image.tmdb.org/t/p/w500{}'.format(r[0].poster_path)
+                poster_url = 'https://image.tmdb.org/t/p/original{}'.format(r[0].poster_path)
 
                 logging.info('TMDB thinks this is %s', title)
 
