@@ -21,28 +21,36 @@ def main():
         (_, type_names, path, filename) = event
         if 'IN_CREATE' in type_names:
             logging.info('Found %s', filename)
-            title = parse_title(filename)
-            r = search_tmdb(title)
+            t = parse_title(filename)
+            r = search_tmdb(t)
             if r:
                 title = r[0].title
                 year = r[0].release_date
                 overview = r[0].overview
                 filepath = '{}/{}'.format(path, filename)
                 poster_url = 'https://image.tmdb.org/t/p/w500{}'.format(r[0].poster_path)
+
+                logging.info('TMDB thinks this is %s', title)
+
                 try:
                     db.insert('INSERT INTO movie (name, year, overview, path, poster_url) VALUES (?, ?, ?, ?, ?);',
                               title, year, overview, filepath, poster_url)
                 except sqlite3.IntegrityError as e:
                     logging.error('Adding %s failed - %s ', title, e)
+                    continue
 
-                logging.info('Added %s', title)
+                logging.info('Added %s', filename)
             else:
-                logging.error('No info found for %s', title)
+                logging.error('No info found for %s', t)
             
             
         if 'IN_DELETE' in type_names:
-            print('{}{}'.format(path, filename))
-            #db.delete()
+            logging.info('Lost %s', filename)
+            filepath = '{}/{}'.format(path, filename)
+            try:
+                db.delete('DELETE FROM movie WHERE path=?;', filepath)
+            except sqlite3.IntegrityError as e:
+                logging.error('Deleting %s failed - %s ', filename, e)
 
 def parse_title(title):
     a = title.lower().split('.')
