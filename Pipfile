@@ -10,6 +10,7 @@ ipython = "*"
 inotify = "*"
 python-dotenv = "*"
 tmdbv3api = "*"
+flask = "*"
 
 [requires]
 python_version = "3.7"
