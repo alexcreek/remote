@@ -3,8 +3,19 @@ services:
   web:
     image: remote:latest
     volumes:
-      - /tmp/remote:/tmp/remote
+      - /nfs/remote/:/db
       - /data/nfs/seedbox/incoming:/watch
     environment:
-      - DB_DIR=/tmp/remote
+      - DB_DIR=/db
       - WATCH_DIR=/watch
+  web-ui:
+    image: remote:latest
+    volumes:
+      - /nfs/remote/:/db
+    environment:
+      - DB_DIR=/db
+      - FLASK_APP=remote.web
+      - FLASK_ENV=development
+    ports:
+      - 8000:8000
+    command: python -m flask run --host 0.0.0.0 --port 8000
