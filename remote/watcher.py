@@ -22,26 +22,27 @@ def main():
         if 'IN_CREATE' in type_names:
             logging.info('Found %s', filename)
             t = parse_title(filename)
-            r = search_tmdb(t)
-            if r:
-                title = r[0].title
-                year = r[0].release_date
-                overview = r[0].overview
-                filepath = '{}/{}'.format(path, filename)
-                poster_url = 'https://image.tmdb.org/t/p/original{}'.format(r[0].poster_path)
+            if t:
+                r = search_tmdb(t)
+                if r:
+                    title = r[0].title
+                    year = r[0].release_date
+                    overview = r[0].overview
+                    filepath = '{}/{}'.format(path, filename)
+                    poster_url = 'https://image.tmdb.org/t/p/original{}'.format(r[0].poster_path)
 
-                logging.info('TMDB thinks this is %s', title)
+                    logging.info('TMDB thinks this is %s', title)
 
-                try:
-                    db.insert('INSERT INTO movie (name, year, overview, path, poster_url) VALUES (?, ?, ?, ?, ?);',
-                              title, year, overview, filepath, poster_url)
-                except sqlite3.IntegrityError as e:
-                    logging.error('Adding %s failed - %s ', title, e)
-                    continue
+                    try:
+                        db.insert('INSERT INTO movie (name, year, overview, path, poster_url) VALUES (?, ?, ?, ?, ?);',
+                                  title, year, overview, filepath, poster_url)
+                    except sqlite3.IntegrityError as e:
+                        logging.error('Adding %s failed - %s ', title, e)
+                        continue
 
-                logging.info('Added %s', filename)
-            else:
-                logging.error('No info found for %s', t)
+                    logging.info('Added %s', filename)
+                else:
+                    logging.error('No info found for %s', t)
             
             
         if 'IN_DELETE' in type_names:
@@ -63,8 +64,8 @@ def parse_title(title):
     except ValueError:
         pass
     if not b:
-        print('ERROR: unable to parse title')
-        sys.exit(1)
+        logging.error('unable to parse title')
+        return b
     return(' '.join(a[:b-1]))
 
 def search_tmdb(movie):
