@@ -1,6 +1,6 @@
 version: '3.1'
 services:
-  web:
+  watcher:
     image: remote:latest
     volumes:
       - /nfs/remote/:/db
@@ -8,14 +8,17 @@ services:
     environment:
       - DB_DIR=/db
       - WATCH_DIR=/watch
-  web-ui:
+  web:
     image: remote:latest
     volumes:
       - /nfs/remote/:/db
+      - /data/nfs/seedbox/incoming:/watch
+      - /data/movies:/movies
+      - $PWD/remote:/code/remote
     environment:
       - DB_DIR=/db
       - FLASK_APP=remote.web
       - FLASK_ENV=development
     ports:
       - 8000:8000
-    command: python -m flask run --host 0.0.0.0 --port 8000
+    command: python -u -m flask run --host 0.0.0.0 --port 8000
