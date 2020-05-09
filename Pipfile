@@ -11,6 +11,7 @@ inotify = "*"
 python-dotenv = "*"
 tmdbv3api = "*"
 flask = "*"
+plexapi = "*"
 
 [requires]
 python_version = "3.7"
