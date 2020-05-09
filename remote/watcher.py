@@ -28,14 +28,13 @@ def main():
                     title = r[0].title
                     year = r[0].release_date
                     overview = r[0].overview
-                    filepath = '{}/{}'.format(path, filename)
                     poster_url = 'https://image.tmdb.org/t/p/original{}'.format(r[0].poster_path)
 
                     logging.info('TMDB thinks this is %s', title)
 
                     try:
-                        db.insert('INSERT INTO movie (name, year, overview, path, poster_url) VALUES (?, ?, ?, ?, ?);',
-                                  title, year, overview, filepath, poster_url)
+                        db.insert('INSERT INTO movie (name, year, overview, filename, poster_url) VALUES (?, ?, ?, ?, ?);',
+                                  title, year, overview, filename, poster_url)
                     except sqlite3.IntegrityError as e:
                         logging.error('Adding %s failed - %s ', title, e)
                         continue
@@ -47,9 +46,8 @@ def main():
             
         if 'IN_DELETE' in type_names:
             logging.info('Lost %s', filename)
-            filepath = '{}/{}'.format(path, filename)
             try:
-                db.delete('DELETE FROM movie WHERE path=?;', filepath)
+                db.delete('DELETE FROM movie WHERE filename=?;', filename)
             except sqlite3.IntegrityError as e:
                 logging.error('Deleting %s failed - %s ', filename, e)
 

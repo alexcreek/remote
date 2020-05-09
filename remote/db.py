@@ -8,12 +8,12 @@ class Db():
         self._initdb()
 
     def _initdb(self):
-        schema = '''CREATE TABLE IF NOT EXISTS movie (
+        schema = '''CREATE TABLE IF NOT EXISTS movie2 (
             id INTEGER PRIMARY KEY,
             name TEXT NOT NULL UNIQUE,
             year TEXT NOT NULL,
             overview TEXT NOT NULL,
-            path TEXT NOT NULL,
+            filename TEXT NOT NULL,
             poster_url TEXT NOT NULL
             );'''
         c = self.conn.cursor()
