@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from . import index
+from . import index, backend
 
 def create_app():
     app = Flask(__name__)
@@ -9,4 +9,5 @@ def create_app():
     )
 
     app.register_blueprint(index.bp)
+    app.register_blueprint(backend.bp)
     return app
