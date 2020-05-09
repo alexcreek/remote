@@ -7,5 +7,5 @@ bp = Blueprint('index', __name__)
 def index():
     db = remote.db.Db()
     movies = []
-    movies = db.query('SELECT * FROM movie ORDER BY id;')
+    movies = db.query('SELECT * FROM movie ORDER BY id DESC;')
     return render_template('index.html', movies=movies)
