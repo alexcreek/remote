@@ -5,9 +5,9 @@ WORKDIR /code
 RUN pip install pipenv
 
 ARG COMMIT
-ENV FLASK_APP=bateman.ui FLASK_ENV=development COMMIT=${COMMIT}
+ENV FLASK_APP=remote.web FLASK_ENV=development COMMIT=${COMMIT}
 COPY $PWD .
 RUN python3 setup.py sdist \
   && python3 -m pip install . \
   && pipenv install --system
-CMD python -u remote/watcher.py
+CMD python -u -m flask run --host 0.0.0.0 --port 8000

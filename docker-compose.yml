@@ -1,20 +1,21 @@
 version: '3.1'
 services:
   watcher:
-    image: remote:latest
+    image: 192.168.1.10:4000/remote:latest
     volumes:
       - /nfs/remote/:/db
       - /data/nfs/seedbox/incoming:/watch
     environment:
       - DB_DIR=/db
       - WATCH_DIR=/watch
+    command: python -u remote/watcher.py
   web:
-    image: remote:latest
+    image: 192.168.1.10:4000/remote:latest
     volumes:
       - /nfs/remote/:/db
       - /data/nfs/seedbox/incoming:/watch
       - /data/movies:/movies
-      - $PWD/remote:/code/remote
+#      - $PWD/remote:/code/remote
     environment:
       - DB_DIR=/db
       - FLASK_APP=remote.web
