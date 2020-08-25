@@ -2,6 +2,7 @@ version: '3.1'
 services:
   watcher:
     image: 192.168.1.10:4000/remote:latest
+    restart: always
     volumes:
       - /nfs/remote/:/db
       - /data/nfs/seedbox/incoming:/watch
@@ -11,6 +12,7 @@ services:
     command: python -u remote/watcher.py
   web:
     image: 192.168.1.10:4000/remote:latest
+    restart: always
     volumes:
       - /nfs/remote/:/db
       - /data/nfs/seedbox/incoming:/watch
