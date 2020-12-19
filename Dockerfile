@@ -1,20 +1,13 @@
-FROM ubuntu:xenial-20191108
-ARG now
-ARG commit
-LABEL org.opencontainers.image.title=remote
-LABEL org.opencontainers.image.authors="Alex Creek <me@alexcreek.com>"
-LABEL org.opencontainers.image.source=https://github.com/alexcreek/remote
-LABEL org.opencontainers.image.revision=$commit
-LABEL org.opencontainers.image.created=$now
-
-ENV LC_ALL=C.UTF-8
+FROM python:3.7-buster
+RUN unlink /etc/localtime \
+  && ln -s /usr/share/zoneinfo/America/New_York /etc/localtime
 WORKDIR /code
-EXPOSE 5000
+RUN pip install pipenv
 
+ARG COMMIT
+ENV FLASK_APP=remote.web FLASK_ENV=development COMMIT=${COMMIT}
 COPY $PWD .
-RUN apt update && \
-  apt-get install -y curl python3 python3-pip && \
-  apt-get clean && \
-  pip3 install -r requirements.txt
-
-CMD ["/usr/bin/python3", "wsgi.py"]
+RUN python3 setup.py sdist \
+  && python3 -m pip install . \
+  && pipenv install --system
+CMD python -u -m flask run --host 0.0.0.0 --port 8000

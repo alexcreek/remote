@@ -1,0 +1,27 @@
+version: '3.1'
+services:
+  watcher:
+    image: 192.168.1.10:4000/remote:latest
+    restart: always
+    volumes:
+      - /nfs/remote/:/db
+      - /data/nfs/seedbox/incoming:/watch
+    environment:
+      - DB_DIR=/db
+      - WATCH_DIR=/watch
+    command: python -u remote/watcher.py
+  web:
+    image: 192.168.1.10:4000/remote:latest
+    restart: always
+    volumes:
+      - /nfs/remote/:/db
+      - /data/nfs/seedbox/incoming:/watch
+      - /data/movies:/movies
+#      - $PWD/remote:/code/remote
+    environment:
+      - DB_DIR=/db
+      - FLASK_APP=remote.web
+      - FLASK_ENV=development
+    ports:
+      - 8000:8000
+    command: python -u -m flask run --host 0.0.0.0 --port 8000

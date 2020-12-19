@@ -1,0 +1,22 @@
+.main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.column {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+img {
+  width: 100%
+}
+
+.modal-footer {
+  justify-content: space-between
+}
+
+.modal-body {
+  text-align: center
+}
