@@ -6,9 +6,8 @@ services:
     volumes:
       - /nfs/remote/:/db
       - /data/nfs/seedbox/incoming:/watch
-    environment:
-      - DB_DIR=/db
-      - WATCH_DIR=/watch
+    env_file:
+      - ./.env
     command: python -u remote/watcher.py
   web:
     image: 192.168.1.10:4000/remote:latest
@@ -18,10 +17,8 @@ services:
       - /data/nfs/seedbox/incoming:/watch
       - /data/movies:/movies
 #      - $PWD/remote:/code/remote
-    environment:
-      - DB_DIR=/db
-      - FLASK_APP=remote.web
-      - FLASK_ENV=development
+    env_file:
+      - ./.env
     ports:
       - 8000:8000
     command: python -u -m flask run --host 0.0.0.0 --port 8000
