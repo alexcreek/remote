@@ -5,7 +5,7 @@ services:
     restart: always
     volumes:
       - /data/apps/remote/:/db
-      - /data/nfs/seedbox/incoming:/watch
+      - /data/apps/seedbox/downloads/incoming:/watch
     env_file:
       - ./.env
     command: python -u remote/watcher.py
@@ -14,7 +14,7 @@ services:
     restart: always
     volumes:
       - /data/apps/remote/:/db
-      - /data/nfs/seedbox/incoming:/watch
+      - /data/apps/seedbox/downloads/incoming:/watch
       - /data/movies:/movies
     env_file:
       - ./.env
