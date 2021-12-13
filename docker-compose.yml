@@ -4,7 +4,7 @@ services:
     image: 192.168.1.10:4000/remote:latest
     restart: always
     volumes:
-      - /nfs/remote/:/db
+      - /data/apps/remote/:/db
       - /data/nfs/seedbox/incoming:/watch
     env_file:
       - ./.env
@@ -13,10 +13,9 @@ services:
     image: 192.168.1.10:4000/remote:latest
     restart: always
     volumes:
-      - /nfs/remote/:/db
+      - /data/apps/remote/:/db
       - /data/nfs/seedbox/incoming:/watch
       - /data/movies:/movies
-#      - $PWD/remote:/code/remote
     env_file:
       - ./.env
     ports:
